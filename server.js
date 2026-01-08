@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 await connectDB();
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('API is running...');
