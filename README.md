@@ -1,104 +1,150 @@
-🔐 Express JWT Authentication API
-Secure Authentication • Token-Based Access • Scalable Backend Design
-📌 Overview
+# =====================================================
+# Authentication and JWT - Express.js Backend
+# =====================================================
 
-This repository implements a secure authentication and authorization system using Express.js and JSON Web Tokens (JWT).
+# Secure authentication & authorization system
+# Built using Express.js, MongoDB, and JWT
 
-The project is designed to demonstrate how modern backend applications handle user authentication, protect routes, and manage secure access using token-based authentication. It follows clean architecture principles and real-world backend best practices.
 
-This is not just a login/signup demo — it focuses on security, structure, and scalability.
+# =====================================================
+# Project Overview
+# =====================================================
 
-🎯 Key Concepts Covered
+# This project demonstrates a real-world authentication
+# and authorization flow using JSON Web Tokens (JWT).
+#
+# It follows a clean and scalable backend architecture
+# with proper separation of concerns:
+# - Controllers for business logic
+# - Routes for API endpoints
+# - Middleware for authentication
+# - Models for database schemas
+#
+# Designed for learning and production readiness.
 
-User registration & login flow
 
-Password hashing using bcrypt
+# =====================================================
+# Tech Stack
+# =====================================================
 
-JWT generation & verification
+# Node.js
+# Express.js
+# MongoDB
+# Mongoose
+# JSON Web Token (JWT)
+# bcrypt
+# dotenv
+# cors
 
-Protected routes using middleware
+# =====================================================
+# Folder Structure
+# =====================================================
 
-Token-based authentication strategy
-
-Clean separation of routes, controllers, and middleware
-
-Environment-based configuration
-
-🛠 Tech Stack
-
-Node.js
-
-Express.js
-
-JWT (jsonwebtoken)
-
-MongoDB
-
-Mongoose
-
-bcrypt
-
-dotenv
-
-📂 Project Structure
-Express-jwt-auth
+AUTHENTICATION AND JWT
 │
 ├── config
-│   └── db.js               # Database connection
+│   └── db.js                 # MongoDB connection
 │
 ├── controllers
-│   └── authController.js   # Auth business logic
+│   ├── authController.js     # Login & register logic
+│   └── userController.js     # User-related operations
 │
 ├── middleware
-│   └── authMiddleware.js  # JWT verification
+│   └── authMiddleware.js     # JWT verification middleware
 │
 ├── models
-│   └── User.js             # User schema
+│   └── User.js               # User schema
 │
 ├── routes
-│   └── authRoutes.js       # Auth endpoints
+│   ├── authRoutes.js         # Auth endpoints
+│   └── userRoutes.js         # User endpoints
 │
-├── .env                    # Environment variables
-├── index.js                # Entry point
+├── .env                      # Environment variables
+├── .gitignore
+├── server.js                 # Application entry point
 ├── package.json
 └── README.md
 
-✨ Features
 
-User signup & login
+# =====================================================
+# Features
+# =====================================================
 
-Secure password hashing
+# User registration
+# User login
+# Password hashing using bcrypt
+# JWT token generation
+# Protected routes using middleware
+# Clean controller-route architecture
+# Environment-based configuration
 
-JWT-based authentication
 
-Protected API routes
+# =====================================================
+# Getting Started
+# =====================================================
 
-Middleware-driven auth checks
-
-Clean and scalable codebase
-
-Easy to extend with roles & permissions
-
-▶️ Getting Started
-1️⃣ Clone the Repository
+# Clone the repository
 git clone https://github.com/KarmPandya007/Express-jwt-auth.git
-cd Express-jwt-auth
 
-2️⃣ Install Dependencies
+
+# Install dependencies
 npm install
 
-3️⃣ Setup Environment Variables
+# =====================================================
+# Environment Variables
+# =====================================================
 
-Create a .env file in the root directory:
+# Create a .env file in the root directory
 
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
 
-4️⃣ Start the Server
+
+# =====================================================
+# Start the Server
+# =====================================================
+
 npm run dev
 
+# Server will run on:
+# http://localhost:3000
 
-Server will start at:
 
-http://localhost:3000
+# =====================================================
+# Authentication Flow
+# =====================================================
+
+# 1. User registers or logs in
+# 2. Password is hashed and verified
+# 3. JWT token is generated
+# 4. Client stores token
+# 5. Token sent in Authorization header
+# 6. Middleware validates token
+# 7. Access granted or denied
+
+
+
+# =====================================================
+# Future Improvements
+# =====================================================
+
+# Refresh tokens
+# Role-Based Access Control (RBAC)
+# Token expiration handling
+# Rate limiting
+# Swagger API documentation
+# Production deployment setup
+
+
+# =====================================================
+# Purpose
+# =====================================================
+
+# This project is built to understand secure authentication
+# and authorization in modern backend applications using
+# Express.js and JWT.
+
+
+
+
