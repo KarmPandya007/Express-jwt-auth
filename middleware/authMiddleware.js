@@ -13,13 +13,26 @@ export const verifyToken = (req, res, next) => {
         })
     }
 
-    try{
+    try {
         const decode = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decode;
         console.log(`The decode user is : ${req.user}`)
-    }catch(error){
+    } catch (error) {
         res.status(400).json({
-            message : "Token is not valid."
+            message: "Token is not valid."
         })
     }
 }
+
+export const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to access this resource"
+      });
+    }
+    next();
+  };
+};
+

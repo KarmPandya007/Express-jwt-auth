@@ -18,18 +18,6 @@ export const getUserById = async (req, res) => {
     });
 }
 
-export const createUser = async (req, res) => {
-    const { email, name, password } = req.body;
-    const newUser = new User({
-        email, name, password
-    });
-    await newUser.save();
-    res.status(201).json({
-        success: true,
-        message: `New user with name ${name} added`,
-        user: newUser
-    });
-}
 
 export const updateUserById = async (req, res) => {
     const id = req.params.id;
@@ -48,7 +36,7 @@ export const deleteUserById = async (req, res) => {
     if (user) {
         res.status(200).json({
             success: true,
-            message: `User with id ${id} deleted`
+            message: `User with id ${user.username} deleted`
         });
     } else {
         res.status(404).json({

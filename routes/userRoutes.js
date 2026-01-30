@@ -1,14 +1,14 @@
 import express from 'express'
-import { getAllUsers, getUserById, createUser, updateUserById, deleteUserById, deleteAllUsers } from "../controllers/userController.js";
+import { getAllUsers, getUserById, updateUserById, deleteUserById, deleteAllUsers } from "../controllers/userController.js";
+import { verifyToken } from '../middleware/authMiddleware.js'
 
 const router = express.Router();
 
-router.get('/', getAllUsers);
-// router.get('/:id', getUserById);
-// router.post('/', createUser);
-// router.put('/:id', updateUserById);
-// router.delete('/:id', deleteUserById);
-router.delete('/', deleteAllUsers);
+router.get('/', verifyToken, getAllUsers);
+router.get('/:id', verifyToken, getUserById);
+router.put('/:id', updateUserById);
+router.delete('/:id', verifyToken, deleteUserById);
+router.delete('/', verifyToken, deleteAllUsers);
 
 
 
