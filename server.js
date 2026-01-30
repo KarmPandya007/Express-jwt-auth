@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
-import { verifyToken } from './middleware/authMiddleware.js'
+import { verifyToken, authorizeRoles } from './middleware/authMiddleware.js'
 
 dotenv.config();
 const app = express();
@@ -20,15 +20,30 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-app.get('/user', verifyToken, (req, res) => {
-  res.send("Welcome user")
-})
-app.get('/manager', (req, res) => {
-  res.send("Welcome manager")
-})
-app.get('/admin', (req, res) => {
-  res.send("Welcome admin")
-})
+// Test routes with RBAC
+app.get('/user', verifyToken, authorizeRoles('user', 'manager', 'admin'), (req, res) => {
+  res.json({
+    success: true,
+    message: `Welcome ${req.user.username}`,
+    role: req.user.role
+  });
+});
+
+app.get('/manager', verifyToken, authorizeRoles('manager', 'admin'), (req, res) => {
+  res.json({
+    success: true,
+    message: `Welcome Manager ${req.user.username}`,
+    role: req.user.role
+  });
+});
+
+app.get('/admin', verifyToken, authorizeRoles('admin'), (req, res) => {
+  res.json({
+    success: true,
+    message: `Welcome Admin ${req.user.username}`,
+    role: req.user.role
+  });
+});
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
