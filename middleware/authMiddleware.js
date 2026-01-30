@@ -37,7 +37,6 @@ export const verifyToken = (req, res, next) => {
 /**
  * Middleware to authorize based on user roles
  * Usage: authorizeRoles('admin', 'manager')
- * @param {...string} roles - Allowed roles for the route
  */
 export const authorizeRoles = (...roles) => {
   return (req, res, next) => {
