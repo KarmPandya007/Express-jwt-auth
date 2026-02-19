@@ -1,83 +1,86 @@
-🔐 Express JWT Authentication API
-Secure Authentication • Token-Based Access • Scalable Backend Design
-📌 Overview
+# 🔐 Express JWT Authentication API
 
-This repository implements a secure authentication and authorization system using Express.js and JSON Web Tokens (JWT).
+A clean and simple JWT auth API using Express and MongoDB.
 
-The project is designed to demonstrate how modern backend applications handle user authentication, protect routes, and manage secure access using token-based authentication. It follows clean architecture principles and real-world backend best practices.
+## What this version focuses on
 
-This is not just a login/signup demo — it focuses on security, structure, and scalability.
+- Simple login/register flow
+- Secure password hashing (`bcryptjs`)
+- JWT access token auth for protected APIs
+- Role-based authorization (`user`, `manager`, `admin`)
+- Input validation on auth routes
+- Consistent API errors and 404 handling
 
-🎯 Key Concepts Covered
+## Quick start
 
-User registration & login flow
+### 1) Install
 
-Password hashing using bcrypt
-
-JWT generation & verification
-
-Protected routes using middleware
-
-Token-based authentication strategy
-
-Clean separation of routes, controllers, and middleware
-
-Environment-based configuration
-
-🛠 Tech Stack
-
-Node.js
-
-Express.js
-
-JWT (jsonwebtoken)
-
-MongoDB
-
-Mongoose
-
-bcrypt
-
-dotenv
-
-
-
-✨ Features
-
-User signup & login
-
-Secure password hashing
-
-JWT-based authentication
-
-Protected API routes
-
-Middleware-driven auth checks
-
-Clean and scalable codebase
-
-Easy to extend with roles & permissions
-
-▶️ Getting Started
-1️⃣ Clone the Repository
-git clone https://github.com/KarmPandya007/Express-jwt-auth.git
-cd Express-jwt-auth
-
-2️⃣ Install Dependencies
+```bash
 npm install
+```
 
-3️⃣ Setup Environment Variables
+### 2) Create `.env`
 
-Create a .env file in the root directory:
-
+```env
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=1h
+CLIENT_ORIGIN=http://localhost:5173
+```
 
-4️⃣ Start the Server
+### 3) Run
+
+```bash
 npm run dev
+```
 
+Server: `http://localhost:3000`
 
-Server will start at:
+## Auth endpoints
 
-http://localhost:3000
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+
+### Register request
+
+```json
+{
+  "username": "john_doe",
+  "password": "StrongPass123"
+}
+```
+
+### Login response (example)
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "token": "<jwt>",
+  "expiresIn": "1h",
+  "user": {
+    "id": "...",
+    "username": "john_doe",
+    "role": "user"
+  }
+}
+```
+
+## Using protected routes
+
+Pass the token in the Authorization header:
+
+```http
+Authorization: Bearer <jwt>
+```
+
+## Existing protected route groups
+
+- `/api/users/*` (role-based access)
+- `/api/test/*` (quick role testing)
+
+## Notes
+
+- Public registration always creates `role: user` (prevents self-assigning admin).
+- If needed later, refresh-token flow can be added in a separate phase.
