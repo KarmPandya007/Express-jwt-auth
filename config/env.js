@@ -1,4 +1,4 @@
-const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET'];
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'JWT_REFRESH_SECRET'];
 
 export const validateEnv = () => {
   const missingVars = requiredEnvVars.filter((name) => !process.env[name]);

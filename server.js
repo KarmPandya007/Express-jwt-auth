@@ -16,6 +16,37 @@ const PORT = process.env.PORT || 5000;
 
 await connectDB();
 
+const authAttempts = new Map();
+const authLimiter = (req, res, next) => {
+  const key = req.ip;
+  const now = Date.now();
+  const windowMs = 15 * 60 * 1000;
+  const maxRequests = 100;
+
+  const attempts = authAttempts.get(key) || [];
+  const recentAttempts = attempts.filter((timestamp) => now - timestamp < windowMs);
+
+  if (recentAttempts.length >= maxRequests) {
+    return res.status(429).json({
+      success: false,
+      message: 'Too many authentication attempts. Please try again later.'
+    });
+  }
+
+  recentAttempts.push(now);
+  authAttempts.set(key, recentAttempts);
+  return next();
+};
+
+const securityHeaders = (req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('X-XSS-Protection', '0');
+  next();
+};
+
+app.use(securityHeaders);
 app.use(express.json({ limit: '10kb' }));
 app.use(
   cors({
@@ -28,7 +59,7 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/test', testRoutes);
 app.use('/api/users', userRoutes);
 
