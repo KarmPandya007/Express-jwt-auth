@@ -1,50 +1,43 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
-/**
- * Middleware to verify JWT token from Authorization header
- * Extracts user information and attaches to req.user
- */
+const extractTokenFromHeader = (authHeader) => {
+  if (!authHeader) return null;
+
+  const [scheme, token] = authHeader.split(' ');
+  if (scheme !== 'Bearer' || !token) return null;
+
+  return token;
+};
+
 export const verifyToken = (req, res, next) => {
-  let token;
-  let authHeader = req.headers.Authorization || req.headers.authorization;
-
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    // Fix: split by space, not empty string
-    token = authHeader.split(" ")[1];
-  }
+  const authHeader = req.headers.authorization;
+  const token = extractTokenFromHeader(authHeader);
 
   if (!token) {
     return res.status(401).json({
       success: false,
-      message: "No token, authorization denied."
+      message: 'Missing or malformed authorization header.'
     });
   }
 
   try {
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decode;
-    console.log(`Authenticated user:`, req.user);
-    // Fix: Add missing next() call
-    next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    return next();
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Token is not valid."
+      message: 'Token is invalid or expired.'
     });
   }
-}
+};
 
-/**
- * Middleware to authorize based on user roles
- * Usage: authorizeRoles('admin', 'manager')
- */
 export const authorizeRoles = (...roles) => {
   return (req, res, next) => {
-    // Check if user exists (should be set by verifyToken)
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: "User not authenticated"
+        message: 'User not authenticated.'
       });
     }
 
@@ -54,7 +47,7 @@ export const authorizeRoles = (...roles) => {
         message: `Access denied. Required role: ${roles.join(' or ')}`
       });
     }
-    next();
+
+    return next();
   };
 };
-
